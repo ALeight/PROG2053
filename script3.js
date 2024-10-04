@@ -37,14 +37,7 @@ function fetchWeatherData(latitude, longitude) {
 function displayWeather(locationName, weatherData, index) {
   const weatherDiv = document.getElementById(`weather${index + 1}`);
   
-  /* Try to add new div dynamically
-  if (!weatherDiv) {
-	weatherDiv = document.createElement('div');
-	weatherDiv.id = `weather${index+1}`;
-	document.getElementById('weather-section').appendChild(weatherDiv); 
-  } */ 
-  
-  weatherDiv.innerHTML = ''; // Clear existing content in case run multiple times
+  weatherDiv.innerHTML = ''; // Clear existing content to ensure no overlap after update
   
   // Create elements for temperature and windspeed
   const heading = document.createElement('h3');
@@ -73,6 +66,15 @@ async function loadWeatherForLocations() {
       console.error(`Error fetching weather data for ${location.name}:`, error);
     }
   }
+}
+
+// Function to update site every 10 minutes = 600,000 ms
+function startWeatherUpdate() {
+    loadWeatherForLocations();
+
+	setInterval(() => {
+		loadWeatherForLocation();
+	}, 600000);
 }
 
 // Call the main function to load weather when the page is ready
